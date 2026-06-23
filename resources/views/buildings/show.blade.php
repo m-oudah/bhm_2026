@@ -3928,9 +3928,11 @@
                     // console.log(documents)
                     for (i = 0; i < documents.length; i++) {
                         $('.lightgallery_2').append(
-                            '<li class="menu-item" data-src="http://192.168.3.13/archive/public/fotoupload/' +
+                            // '<li class="menu-item" data-src="http://192.168.3.13/archive/public/fotoupload/' +
+                           '<li class="menu-item" data-src="http://152.53.237.131/archive/fotoupload/' +
                             documents[i].document_image +
-                            '" data-sub-html="<h4></h4>"><a href="javascript:;"><img class="img-responsive" src="http://192.168.3.13/archive/public/fotoupload/' +
+                            // '" data-sub-html="<h4></h4>"><a href="javascript:;"><img class="img-responsive" src="http://192.168.3.13/archive/public/fotoupload/' +
+                           '" data-sub-html="<h4></h4>"><a href="javascript:;"><img class="img-responsive" src="http://localhost/archive/fotoupload/' +
                             documents[i].document_image +
                             '"></a><button class="btn btn-primary waves-effect waves-light" id="click_transfer_photo"  data-id="' +
                             documents[i]

@@ -12,7 +12,9 @@ class ArchiveController extends Controller
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
-            CURLOPT_URL => 'http://192.168.3.13/archive/public/getFileData/' . $file_number,
+            // CURLOPT_URL => 'http://192.168.3.13/archive/public/getFileData/' . $file_number,
+            CURLOPT_URL => 'http://152.53.237.131/archive/getFileData/' . $file_number,
+
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => '',
             CURLOPT_MAXREDIRS => 10,
