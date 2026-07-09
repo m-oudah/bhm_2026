@@ -107,7 +107,7 @@
                             <div class="form-check">
                             </div>
                         </div>
-                        <button class="btn btn-primary d-grid w-100" type="submit">Sign in</button>
+                        <button class="btn btn-primary d-grid w-100" type="submit">{{ __('Login') }}</button>
                     </form>
                 </div>
             </div>

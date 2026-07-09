@@ -12,7 +12,7 @@ class TaxTotalByCustomerController extends Controller
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
-            CURLOPT_URL => 'http://192.168.3.3/IfmisService/Service1.svc/getTaxTotalsByCustomer/' . $id,
+            CURLOPT_URL => 'http://152.53.237.131/IfmisService/Service1.svc/getTaxTotalsByCustomer/' . $id,
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => '',
             CURLOPT_MAXREDIRS => 10,
@@ -45,7 +45,7 @@ class TaxTotalByCustomerController extends Controller
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
-            CURLOPT_URL => 'http://192.168.3.3/IfmisService/Service1.svc/getTaxesByCustomerNo/' . $customer,
+            CURLOPT_URL => 'http://152.53.237.131/IfmisService/Service1.svc/getTaxesByCustomerNo/' . $customer,
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => '',
             CURLOPT_MAXREDIRS => 10,

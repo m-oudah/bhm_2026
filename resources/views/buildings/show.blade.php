@@ -16,7 +16,7 @@
         }
 
 
-        button#click_transfer_photo {
+        button.click_transfer_photo {
             position: relative;
             top: -36px;
         }
@@ -34,6 +34,97 @@
             width: 100%;
             height: 100%;
         }
+
+        .archive-browser {
+            display: flex;
+            gap: 16px;
+            align-items: flex-start;
+        }
+
+        .archive-types {
+            width: 260px;
+            max-width: 100%;
+            flex: 0 0 260px;
+        }
+
+        .archive-type-btn {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            width: 100%;
+            margin-bottom: 8px;
+            text-align: right;
+            white-space: normal;
+        }
+
+        .archive-type-btn .badge {
+            flex: 0 0 auto;
+        }
+
+        .archive-type-name {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .archive-type-color {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            flex: 0 0 10px;
+            background: #a8aaae;
+        }
+
+        .archive-type-color.blue {
+            background: #0d6efd;
+        }
+
+        .archive-type-color.purple {
+            background: #7367f0;
+        }
+
+        .archive-type-color.amber {
+            background: #ffab00;
+        }
+
+        .archive-type-color.gray {
+            background: #a8aaae;
+        }
+
+        .archive-type-color.teal {
+            background: #00b8a9;
+        }
+
+        .archive-gallery-wrap {
+            flex: 1 1 auto;
+            min-width: 0;
+        }
+
+        .archive-empty {
+            display: none;
+            padding: 24px;
+            border: 1px dashed #d9dee3;
+            border-radius: 6px;
+            color: #697a8d;
+            text-align: center;
+        }
+
+        @media (max-width: 767.98px) {
+            .archive-browser {
+                display: block;
+            }
+
+            .archive-types {
+                width: 100%;
+                margin-bottom: 16px;
+            }
+
+            .demo-gallery li.menu-item {
+                width: calc(50% - 20px);
+            }
+        }
+
         #del_license_pdf {
             background: beige;
             position: absolute;
@@ -1093,18 +1184,16 @@
                                         <div class="tab-pane fade" id="Archives" role="tabpanel"
                                              aria-labelledby="#settings-list-item">
                                             <div class="col-xl-12 order-0 order-md-1">
-                                                <div class="demo-gallery">
-                                                    <ul id="lightgallery_2" class="lightgallery_2">
-                                                        <li class="menu-item"
-                                                            data-src="https://www.mexatk.com/wp-content/uploads/2015/09/%D8%AA%D9%86%D8%B2%D9%8A%D9%84-%D8%B5%D9%88%D8%B1-%D8%AD%D9%8A%D9%88%D8%A7%D9%86%D8%A7%D8%AA-2.jpg"
-                                                            data-sub-html="<h4>111</h4>">
-                                                            <a href="">
-                                                                <img class="img-responsive"
-                                                                     src="https://www.mexatk.com/wp-content/uploads/2015/09/%D8%AA%D9%86%D8%B2%D9%8A%D9%84-%D8%B5%D9%88%D8%B1-%D8%AD%D9%8A%D9%88%D8%A7%D9%86%D8%A7%D8%AA-2.jpg">
-                                                            </a>
-                                                        </li>
-
-                                                    </ul>
+                                                <div class="archive-browser">
+                                                    <div class="archive-types">
+                                                        <div id="archive_type_tree" class="list-group"></div>
+                                                    </div>
+                                                    <div class="archive-gallery-wrap">
+                                                        <div id="archive_empty" class="archive-empty">لا توجد ملفات في هذا التصنيف</div>
+                                                        <div class="demo-gallery">
+                                                            <ul id="lightgallery_2" class="lightgallery_2 clearfix"></ul>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -2689,12 +2778,24 @@
             // thumbnail: true,
             // rotate: true,
         });
-        lightGallery(document.getElementById('lightgallery_2'), {
-            download: true,
-            share: false,
-            // thumbnail: true,
-            // rotate: true,
-        });
+        let archiveGallery = null;
+
+        function initArchiveGallery() {
+            const galleryElement = document.getElementById('lightgallery_2');
+
+            if (archiveGallery && archiveGallery.destroy) {
+                archiveGallery.destroy(true);
+            }
+
+            archiveGallery = lightGallery(galleryElement, {
+                download: true,
+                share: false,
+                // thumbnail: true,
+                // rotate: true,
+            });
+        }
+
+        initArchiveGallery();
         // ==========================================
         // FilePond
         FilePond.registerPlugin(
@@ -3923,24 +4024,159 @@
 
             axios.get("{{route('archives.getFileData', $building->file_number ?? 0)}}")
                 .then(function (res) {
-                    // console.log(res)
-                    let documents = res.data.documents;
-                    // console.log(documents)
-                    for (i = 0; i < documents.length; i++) {
-                        $('.lightgallery_2').append(
-                            // '<li class="menu-item" data-src="http://192.168.3.13/archive/public/fotoupload/' +
-                           '<li class="menu-item" data-src="http://152.53.237.131/archive/fotoupload/' +
-                            documents[i].document_image +
-                            // '" data-sub-html="<h4></h4>"><a href="javascript:;"><img class="img-responsive" src="http://192.168.3.13/archive/public/fotoupload/' +
-                           '" data-sub-html="<h4></h4>"><a href="javascript:;"><img class="img-responsive" src="http://localhost/archive/fotoupload/' +
-                            documents[i].document_image +
-                            '"></a><button class="btn btn-primary waves-effect waves-light" id="click_transfer_photo"  data-id="' +
-                            documents[i]
-                                .id +
-                            '" href="javascript:;" data-bs-toggle="modal" data-bs-target="#show_transferPhoto_model" > <i class="fa-regular fa-pen-to-square"></i><span></span> </button></li>'
-                        )
+                    let documents = res.data.documents || [];
+                    let documentsByType = {};
+                    let selectedType = 'all';
+                    const uncategorizedType = 'غير مصنف';
+                    const archiveFileUrlTemplate = "{{ route('archives.getFile', ['filename' => '__filename__']) }}";
+                    const archiveTypeSettings = [
+                        {id: 'correspondence', label: 'مراسلات', color: 'blue'},
+                        {id: 'reports', label: 'تقارير', color: 'purple'},
+                        {id: 'legal', label: 'وثائق قانونية', color: 'amber'},
+                        {id: 'other', label: 'أخرى', color: 'gray'},
+                        {id: 'cat_mqf6ria9', label: 'عقود ملكية', color: 'teal'}
+                    ];
+                    const archiveTypeLookup = archiveTypeSettings.reduce(function (lookup, type, index) {
+                        lookup[type.id] = Object.assign({order: index}, type);
+                        lookup[type.label] = Object.assign({order: index}, type);
+
+                        return lookup;
+                    }, {});
+
+                    function getArchiveType(documentType) {
+                        let cleanType = $.trim(documentType || '');
+
+                        if (cleanType && archiveTypeLookup[cleanType]) {
+                            return archiveTypeLookup[cleanType];
+                        }
+
+                        if (cleanType) {
+                            return {
+                                id: cleanType,
+                                label: cleanType,
+                                color: 'gray',
+                                order: archiveTypeSettings.length
+                            };
+                        }
+
+                        return {
+                            id: 'uncategorized',
+                            label: uncategorizedType,
+                            color: 'gray',
+                            order: archiveTypeSettings.length + 1
+                        };
                     }
-                    $('body').on('click', '#click_transfer_photo', function (e) {
+
+                    documents.forEach(function (document) {
+                        let documentType = getArchiveType(document.document_type);
+
+                        if (!documentsByType[documentType.id]) {
+                            documentsByType[documentType.id] = {
+                                type: documentType,
+                                documents: []
+                            };
+                        }
+
+                        documentsByType[documentType.id].documents.push(document);
+                    });
+
+                    function renderArchiveTypes() {
+                        const $tree = $('#archive_type_tree');
+                        $tree.empty();
+
+                        $('<button/>', {
+                            type: 'button',
+                            class: 'list-group-item list-group-item-action archive-type-btn active',
+                            'data-type': 'all'
+                        }).append(
+                            $('<span/>').text('كل الملفات'),
+                            $('<span/>', {class: 'badge bg-primary rounded-pill'}).text(documents.length)
+                        ).appendTo($tree);
+
+                        getOrderedArchiveGroups().forEach(function (group) {
+                            $('<button/>', {
+                                type: 'button',
+                                class: 'list-group-item list-group-item-action archive-type-btn',
+                                'data-type': group.type.id
+                            }).append(
+                                $('<span/>', {class: 'archive-type-name'}).append(
+                                    $('<span/>', {class: 'archive-type-color ' + group.type.color}),
+                                    $('<span/>').text(group.type.label)
+                                ),
+                                $('<span/>', {class: 'badge bg-primary rounded-pill'}).text(group.documents.length)
+                            ).appendTo($tree);
+                        });
+                    }
+
+                    function getOrderedArchiveGroups() {
+                        return Object.keys(documentsByType).map(function (typeId) {
+                            return documentsByType[typeId];
+                        }).sort(function (first, second) {
+                            if (first.type.order !== second.type.order) {
+                                return first.type.order - second.type.order;
+                            }
+
+                            return first.type.label.localeCompare(second.type.label, 'ar');
+                        });
+                    }
+
+                    function renderArchiveDocuments(type) {
+                        const $gallery = $('.lightgallery_2');
+                        const selectedDocuments = type === 'all'
+                            ? getOrderedArchiveGroups().reduce(function (orderedDocuments, group) {
+                                return orderedDocuments.concat(group.documents);
+                            }, [])
+                            : (documentsByType[type] ? documentsByType[type].documents : []);
+
+                        $gallery.empty();
+                        $('#archive_empty').toggle(selectedDocuments.length === 0);
+
+                        selectedDocuments.forEach(function (document) {
+                            let documentType = getArchiveType(document.document_type);
+                            let imageName = document.document_image || '';
+                            let imageUrl = archiveFileUrlTemplate.replace('__filename__', encodeURIComponent(imageName));
+                            let $item = $('<li/>', {
+                                class: 'menu-item',
+                                'data-src': imageUrl,
+                                'data-sub-html': '<h4>' + $('<div/>').text(documentType.label).html() + '</h4>'
+                            });
+
+                            $('<a/>', {href: 'javascript:;'}).append(
+                                $('<img/>', {
+                                    class: 'img-responsive',
+                                    src: imageUrl,
+                                    alt: documentType.label
+                                })
+                            ).appendTo($item);
+
+                            $('<button/>', {
+                                class: 'btn btn-primary waves-effect waves-light click_transfer_photo',
+                                'data-id': document.id,
+                                href: 'javascript:;',
+                                'data-bs-toggle': 'modal',
+                                'data-bs-target': '#show_transferPhoto_model'
+                            }).append(
+                                $('<i/>', {class: 'fa-regular fa-pen-to-square'}),
+                                $('<span/>')
+                            ).appendTo($item);
+
+                            $gallery.append($item);
+                        });
+
+                        initArchiveGallery();
+                    }
+
+                    renderArchiveTypes();
+                    renderArchiveDocuments(selectedType);
+
+                    $('#archive_type_tree').on('click', '.archive-type-btn', function () {
+                        selectedType = $(this).data('type');
+                        $('.archive-type-btn').removeClass('active');
+                        $(this).addClass('active');
+                        renderArchiveDocuments(selectedType);
+                    });
+
+                    $('body').on('click', '.click_transfer_photo', function (e) {
                         e.preventDefault();
                         let id = $(this).data('id')
                         // alert(id)
